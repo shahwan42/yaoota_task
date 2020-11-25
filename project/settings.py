@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     # Third party
     "phonenumber_field",
     # Local
-    "pname.users.apps.UsersConfig",
+    "yaoota_task.users.apps.UsersConfig",
 ]
 
 MIDDLEWARE = [

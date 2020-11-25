@@ -148,3 +148,6 @@ staticfiles/
 
 # db.json
 db.json
+
+# keeps showing up :3 ignore for now
+Pipfile
