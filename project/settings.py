@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     # Local
     "yaoota_task.users.apps.UsersConfig",
+    "yaoota_task.nid.apps.NidConfig",
 ]
 
 MIDDLEWARE = [
