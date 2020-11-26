@@ -19,6 +19,7 @@ from django.views.generic.base import TemplateView
 
 api_urlpatterns = [
     path("users/", include("yaoota_task.users.api.urls", namespace="users_api")),
+    path("nid/", include("yaoota_task.nid.api.urls", namespace="nid_api")),
 ]
 
 urlpatterns = [
