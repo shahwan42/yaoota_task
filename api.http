@@ -1,0 +1,12 @@
+### Valid
+POST http://localhost:8001/api/nid/check/
+Content-Type: application/json
+
+{"id_number": "28311301121341"}
+
+### Invalid
+POST http://localhost:8001/api/nid/check/
+Content-Type: application/json
+
+{"id_number": "38311301121351"}
+
