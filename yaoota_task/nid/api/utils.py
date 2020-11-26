@@ -1,3 +1,4 @@
+import calendar
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
@@ -88,8 +89,15 @@ def validate_id_data(id_data: dict):
     day = id_data.get("day")
     if not (1 <= int(day) <= int(max_days_in_each_month[month])):
         raise ValidationError("Invalid")
-    # NOTE we could go further and calculate leap years
-    # and validate Feb days if year is leap or not
+
+    # validate day with non-leap years
+    full_year = f"19{year}" if millennium == "2" else f"20{year}"
+    if (
+        not calendar.isleap(int(full_year))
+        and month == "02"
+        and not (1 <= int(day) <= 28)
+    ):
+        raise ValidationError("Invalid")
 
     # validate governorates
     birth_governorate = id_data.get("birth_governorate")

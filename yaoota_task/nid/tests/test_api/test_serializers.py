@@ -56,6 +56,13 @@ class NationalIdSerializerTests(SimpleTestCase):
             serializer.is_valid(raise_exception=True)
         self.assertEqual(serializer.errors["id_number"][0], "Invalid")
 
+        # invalid in a non-leap year
+        self.payload["id_number"] = "29402291300441"
+        serializer = NationalIdSerializer(data=self.payload)
+        with self.assertRaises(ValidationError):
+            serializer.is_valid(raise_exception=True)
+        self.assertEqual(serializer.errors["id_number"][0], "Invalid")
+
     def test_invalid_governorate(self):
         self.payload["id_number"] = "29307181000441"
         serializer = NationalIdSerializer(data=self.payload)
