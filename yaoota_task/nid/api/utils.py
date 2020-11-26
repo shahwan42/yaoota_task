@@ -63,55 +63,43 @@ def extract_id_data(id_number: str):
 
 
 def validate_id_data(id_data: dict):
-    # validate millennium
     millennium = id_data.get("millennium")
-
-    if millennium not in ["2", "3"]:
-        raise ValidationError("Invalid")
-
-    # validate year
     year = id_data.get("year")
-
-    # 1900 - 1999 with millennium = 2
-    if millennium == "2" and not (0 <= int(year) <= 99):
-        raise ValidationError("Invalid")
-
-    # 2000 - now with millennium = 3
-    if millennium == "3" and not (0 <= int(year) <= int(str(timezone.now().year)[2:])):
-        raise ValidationError("Invalid")
-
-    # validate month
-    month = id_data.get("month")
-    if not (1 <= int(month) <= 12):
-        raise ValidationError("Invalid")
-
-    # validate days
-    day = id_data.get("day")
-    if not (1 <= int(day) <= int(max_days_in_each_month[month])):
-        raise ValidationError("Invalid")
-
-    # validate day with non-leap years
     full_year = f"19{year}" if millennium == "2" else f"20{year}"
-    if (
-        not calendar.isleap(int(full_year))
-        and month == "02"
-        and not (1 <= int(day) <= 28)
-    ):
-        raise ValidationError("Invalid")
-
-    # validate governorates
+    month = id_data.get("month")
+    day = id_data.get("day")
     birth_governorate = id_data.get("birth_governorate")
-    if birth_governorate not in governorates.keys():
-        raise ValidationError("Invalid")
-
-    # validate serial
-
-    # validate gender
     gender = id_data.get("gender")
-    if int(gender) not in range(1, 10):
-        raise ValidationError("Invalid")
-
-    # validate checksum
     checksum = id_data.get("checksum")
-    if int(checksum) not in range(1, 10):
+
+    if (
+        # validate millennium
+        (millennium not in ["2", "3"])
+        # validate year
+        # 1900 - 1999 with millennium = 2
+        or (millennium == "2" and not (0 <= int(year) <= 99))
+        # 2000 - now with millennium = 3
+        or (
+            millennium == "3"
+            and not (0 <= int(year) <= int(str(timezone.now().year)[2:]))
+        )
+        # validate month
+        or (not (1 <= int(month) <= 12))
+        # validate day
+        or (not (1 <= int(day) <= int(max_days_in_each_month[month])))
+        # validate day with non-leap years
+        or (
+            (
+                not calendar.isleap(int(full_year))
+                and month == "02"
+                and not (1 <= int(day) <= 28)
+            )
+        )
+        # validate governorates
+        or (birth_governorate not in governorates.keys())
+        # validate gender
+        or (int(gender) not in range(1, 10))
+        # validate checksum
+        or (int(checksum) not in range(1, 10))
+    ):
         raise ValidationError("Invalid")
